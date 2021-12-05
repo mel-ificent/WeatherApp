@@ -1,0 +1,92 @@
+:root {
+    --primary: #fdfdfd;
+    --forecastcolor: #1c2840;
+  }
+
+  
+  body {
+    background-color: var(--primary);
+    margin: 0;
+    padding: 0;
+    font-family: 'Readex Pro', sans-serif;
+    color: var(--forecastcolor);
+    line-height: 1.5;
+    font-size: 16px;
+  }
+  
+  main{
+      padding:10px;
+      flex-wrap:wrap;
+  }
+
+  
+  /* CARDS & Containers*/
+
+  .page-header {
+    color: var(--primary);
+    background-image: linear-gradient(
+        rgb(2, 0, 57) 0%,
+        rgba(30, 3, 100, 0.6) 100%
+      );
+    padding: 2.5%;
+    text-align:center;
+
+  }
+
+  .search-card{
+    padding:20px;
+    background-color:aliceblue;
+    width:25%;
+    display:inline-block;
+
+  }
+
+  .results-card{
+    margin:5px;
+    display:inline-block;
+    height:100%;
+    width:70%;
+
+  }
+
+  .city-card {
+    margin: 0 0 20px 0;
+    border: 3px solid var(--dark);
+    border-radius: var(--border-radius);
+  }
+  
+.five-day-card{
+    display:flex;
+    justify-content:space-between;
+}
+
+.forecast-card{
+    padding:5px;
+    margin: 5px;
+    background-color: var(--forecastcolor);
+    color: var(--primary);
+    display: inline-block;
+    min-width: 150px;
+
+}
+  
+
+  
+  /* FORM and buttons*/
+  .form-input,
+  .custom-button {
+    display: block;
+  }
+  
+  
+  .form-input {
+    width: 100%;
+    padding: 3%;
+    margin: 5px 0;
+    font-size: 1.2rem;
+  }
+  
+  .custom-button{
+      width:100%;
+      margin-top:5px;
+  }
