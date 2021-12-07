@@ -10,13 +10,13 @@ var fiveDayForecastEl = document.querySelector('#five-day-forecast');
 var cities = [];
 
 
-//Function for storing saved city locations as Buttons
+//When page loads, identify whether there are any cities saved to local storage, if so update the history buttons
 
 function init() {
     // Get stored cities from localStorage
     var storedCities = JSON.parse(localStorage.getItem("cities"));
   
-    // If todos were retrieved from localStorage, update the todos array to it
+    // If cities were retrieved from localStorage, update the cities array to it
     if (storedCities !== null) {
       cities = storedCities;
     }
@@ -24,11 +24,36 @@ function init() {
     // This is a helper function that will render saved city button to the DOM
     renderSavedButtons();
   }
-function renderSavedButtons(){
-    for(i=0;i<cities.length;i++){
 
+  //Display saved cities as buttons
+function renderSavedButtons(){
+
+    for(i=0;i<cities.length;i++){
+        var cityText = cities[i];
+
+        var cityButton = document.createElement("button");
+        cityButton.textContent = cityText;
+        cityButton.setAttribute("data-language", cityText);
+        cityButton.setAttribute("class", "btn btn-primary custom-button");
+    
+        cityHistoryEl.appendChild(cityButton);
+        
     }
 }
+
+  //Add newly searched city to the saved button list
+  function renderNewSavedButtons(){
+
+    
+        var cityText = cities[(cities.length-1)];
+
+        var cityButton = document.createElement("button");
+        cityButton.textContent = cityText;
+        cityButton.setAttribute("data-language", cityText);
+        cityButton.setAttribute("class", "btn btn-primary custom-button");
+        cityHistoryEl.appendChild(cityButton);
+        
+    }
 
 //Function for handling form submit when searching forecast for a city
 var formSubmitHandler = function (event) {
@@ -39,27 +64,31 @@ var formSubmitHandler = function (event) {
     if (city) {
         cities.push(city);
         localStorage.setItem("cities", JSON.stringify(cities));
+        renderNewSavedButtons();
         getCityForecast(city);
         cityInputEl.value = '';
+
       
     } else {
       alert('Please enter a city');
     }
   };
 
+  //Function for showing the searched city's forecast
   var getCityForecast = function (city){
 
   }
   
- // var buttonClickHandler = function (event) {
- //   var cityHistory = event.target.getAttribute('data-language');
+  //Function for triggering a weather search based on clicking a history button
+  var buttonClickHandler = function (event) {
+    var cityHistory = event.target.getAttribute('data-language');
   
-  //  if (language) {
-   //   getFeaturedRepos(language);
-  
-   //   repoContainerEl.textContent = '';
-  //  }
-// };
+    if (cityHistory) {
+      getCityForecast(cityHistory);
+
+    }
+ };
 
 init();
 searchFormEl.addEventListener('submit', formSubmitHandler);
+cityHistoryEl.addEventListener('click',buttonClickHandler);
