@@ -76,7 +76,17 @@ var formSubmitHandler = function (event) {
 
   //Function for showing the searched city's forecast
   var getCityForecast = function (city){
+    var  today = moment();
+    cityResultsTermEl.textContent= city + " " + today.format("MM/DD/YY");
 
+    for(i=1;i<6;i++){
+        var date = moment().add(i, 'days').format("MM/DD/YY"); 
+        var dateEntry = document.querySelector("#date" + i);
+        dateEntry.textContent = date;
+    }
+
+
+    fiveDayForecastEl.setAttribute("class","forecast-show");
   }
   
   //Function for triggering a weather search based on clicking a history button
