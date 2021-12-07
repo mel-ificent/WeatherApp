@@ -5,6 +5,7 @@ var cityHistoryEl = document.querySelector('#city-history');
 var cityResultsTermEl = document.querySelector('#city-search-term');
 var cityResultsEl = document.querySelector('#city-result');
 var fiveDayForecastEl = document.querySelector('#five-day-forecast');
+var weatherIconTodayEl = document.querySelector('#weatherIconToday');
 
 //Local storage values
 var cities = [];
@@ -76,8 +77,34 @@ var formSubmitHandler = function (event) {
 
   //Function for showing the searched city's forecast
   var getCityForecast = function (city){
+
+    var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=';
+
+    fetch(apiUrl).then(function (response) {
+        if (response.ok) {
+          response.json().then(function (data) {
+            displayForecast(data, city);
+          });
+        } else {
+          alert('Error loading data');
+        }
+      });
+    };
+
+
+
+  //After getting results from API, add them to page
+  var displayForecast = function (results, searchCity) {
     var  today = moment();
-    cityResultsTermEl.textContent= city + " " + today.format("MM/DD/YY");
+    if (results.length === 0) {
+      cityResultsTermEl.textContent = 'No results found for city';
+      return;
+    }
+    
+    var iconUrl = 'http://openweathermap.org/img/w/' + results.weather[0].icon + '.png';
+    cityResultsTermEl.innerHTML= searchCity + " " + today.format("MM/DD/YY") + " ";
+    weatherIconTodayEl.setAttribute("src",iconUrl);
+
 
     for(i=1;i<6;i++){
         var date = moment().add(i, 'days').format("MM/DD/YY"); 
@@ -85,9 +112,9 @@ var formSubmitHandler = function (event) {
         dateEntry.textContent = date;
     }
 
-
     fiveDayForecastEl.setAttribute("class","forecast-show");
-  }
+
+  };
   
   //Function for triggering a weather search based on clicking a history button
   var buttonClickHandler = function (event) {
