@@ -4,8 +4,14 @@ var searchFormEl = document.querySelector('#search-form');
 var cityHistoryEl = document.querySelector('#city-history');
 var cityResultsTermEl = document.querySelector('#city-search-term');
 var cityResultsEl = document.querySelector('#city-result');
+var resultsContainerEl = document.querySelector('#results-container');
 var fiveDayForecastEl = document.querySelector('#five-day-forecast');
 var weatherIconTodayEl = document.querySelector('#weatherIconToday');
+
+var cityTempEl = document.querySelector('#city-temp');
+var cityWindEl = document.querySelector('#city-wind');
+var cityHumidityEl = document.querySelector('#city-humidity');
+var cityUVEl = document.querySelector('#city-uv');
 
 //Local storage values
 var cities = [];
@@ -104,6 +110,13 @@ var formSubmitHandler = function (event) {
     var iconUrl = 'http://openweathermap.org/img/w/' + results.weather[0].icon + '.png';
     cityResultsTermEl.innerHTML= searchCity + " " + today.format("MM/DD/YY") + " ";
     weatherIconTodayEl.setAttribute("src",iconUrl);
+    var tempConversion = Math.round(((results.main.temp-273.15)*1.8)+32);
+    cityTempEl.textContent = tempConversion;
+    var speedConversion = Math.round(results.wind.speed/0.44704);
+    cityWindEl.textContent = speedConversion;
+    cityHumidityEl.textContent = results.main.humidity;
+    //cityUVEl.textContent = results.
+
 
 
     for(i=1;i<6;i++){
@@ -112,7 +125,7 @@ var formSubmitHandler = function (event) {
         dateEntry.textContent = date;
     }
 
-    fiveDayForecastEl.setAttribute("class","forecast-show");
+    resultsContainerEl.setAttribute("class","results-card-show");
 
   };
   

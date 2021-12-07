@@ -36,13 +36,18 @@
         </div>
     </div>
 
-    <div class="results-card"> 
+    <div id="results-container" class="results-card-hide"> 
 
     <div class="city-card">
       <h2><span id="city-search-term"></span><img id="weatherIconToday" src="" alt="Weather icon"></h2>
-      <div id="city-result"></div>
+      <div id="city-result">
+          <p>Temp: <span id="city-temp"></span>&#8457;</p>
+          <p>Wind: <span id="city-wind"></span> MPH</p>
+          <p>Humidity: <span id="city-humidity"></span>%</p>
+          <p>UV Index: <span id="city-uv"></span></p>
+      </div>
     </div>
-    <div id="five-day-forecast" class="forecast-hide">
+    <div id="five-day-forecast">
         <h2>Five Day Forecast:</h2>
         <div id="first" class="forecast-card">
             <p><span id="date1"></span</p>
