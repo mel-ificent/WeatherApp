@@ -13,6 +13,17 @@ var cityWindEl = document.querySelector('#city-wind');
 var cityHumidityEl = document.querySelector('#city-humidity');
 var cityUVEl = document.querySelector('#city-uv');
 
+//five day forecast variables
+var dateEntry;
+var weatherIconEl;
+var dailyTempEl;
+var dailyWindEl;
+var dailyHumidityEl;
+var dailyIconUrl='';
+
+var lat='';
+var lon='';
+
 //Local storage values
 var cities = [];
 
@@ -84,7 +95,7 @@ var formSubmitHandler = function (event) {
   //Function for showing the searched city's forecast
   var getCityForecast = function (city){
 
-    var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=';
+    var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + '&units=imperial&appid=';
 
     fetch(apiUrl).then(function (response) {
         if (response.ok) {
@@ -110,25 +121,69 @@ var formSubmitHandler = function (event) {
     var iconUrl = 'http://openweathermap.org/img/w/' + results.weather[0].icon + '.png';
     cityResultsTermEl.innerHTML= searchCity + " " + today.format("MM/DD/YY") + " ";
     weatherIconTodayEl.setAttribute("src",iconUrl);
-    var tempConversion = Math.round(((results.main.temp-273.15)*1.8)+32);
-    cityTempEl.textContent = tempConversion;
-    var speedConversion = Math.round(results.wind.speed/0.44704);
-    cityWindEl.textContent = speedConversion;
+    cityTempEl.textContent = results.main.temp;
+    cityWindEl.textContent = results.wind.speed;
     cityHumidityEl.textContent = results.main.humidity;
-    //cityUVEl.textContent = results.
+    lat = results.coord.lat;
+    lon = results.coord.lon;
 
-
-
-    for(i=1;i<6;i++){
-        var date = moment().add(i, 'days').format("MM/DD/YY"); 
-        var dateEntry = document.querySelector("#date" + i);
-        dateEntry.textContent = date;
-    }
-
-    resultsContainerEl.setAttribute("class","results-card-show");
+  getCityFiveDayForecast(lat,lon);
 
   };
-  
+
+//Function for calling API to get additional five day forecast and UV indicator details
+  var getCityFiveDayForecast = function (lat,lon){
+
+    var apiUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&exclude=minutely,hourly&units=imperial&appid=';
+
+    fetch(apiUrl).then(function (response) {
+        if (response.ok) {
+          response.json().then(function (data) {
+            displayFiveDayForecast(data);
+          });
+        } else {
+          alert('Error loading data');
+        }
+      });
+    };
+
+var displayFiveDayForecast= function (data){
+
+    cityUVEl.textContent = data.current.uvi;
+
+    for(i=1;i<6;i++){
+      dateEntry = document.querySelector("#date" + i);
+      weatherIconEl = document.querySelector('#weatherIcon'+ i);
+      dailyTempEl = document.querySelector('#city-temp'+ i);
+      dailyWindEl = document.querySelector('#city-wind' + i);
+      dailyHumidityEl = document.querySelector('#city-humidity'+ i);
+
+      //Set the date, converted from Unix
+      var unixDate = data.daily[i].dt;
+      var date = moment.unix(unixDate).format("MM/DD/YY");
+      dateEntry.textContent = date;
+
+      //set the icon
+      dailyIconUrl = 'http://openweathermap.org/img/w/' + data.daily[i].weather[0].icon + '.png';
+      weatherIconEl.setAttribute("src",dailyIconUrl);
+
+      //set temperatures
+      dailyTempEl.textContent = data.daily[i].temp.day;
+
+
+      //set wind
+      dailyWindEl.textContent = data.daily[i].wind_speed;
+
+
+      //set humidity
+      dailyHumidityEl.textContent = data.daily[i].humidity;
+
+
+  }
+
+  resultsContainerEl.setAttribute("class","results-card-show");
+
+}
   //Function for triggering a weather search based on clicking a history button
   var buttonClickHandler = function (event) {
     var cityHistory = event.target.getAttribute('data-language');
