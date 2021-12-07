@@ -12,6 +12,8 @@ var cityTempEl = document.querySelector('#city-temp');
 var cityWindEl = document.querySelector('#city-wind');
 var cityHumidityEl = document.querySelector('#city-humidity');
 var cityUVEl = document.querySelector('#city-uv');
+var UVI;
+var alreadySearched = false;
 
 //five day forecast variables
 var dateEntry;
@@ -80,9 +82,9 @@ var formSubmitHandler = function (event) {
     var city = cityInputEl.value.trim();
   
     if (city) {
-        cities.push(city);
-        localStorage.setItem("cities", JSON.stringify(cities));
-        renderNewSavedButtons();
+        //cities.push(city);
+        //localStorage.setItem("cities", JSON.stringify(cities));
+        //renderNewSavedButtons();
         getCityForecast(city);
         cityInputEl.value = '';
 
@@ -113,19 +115,41 @@ var formSubmitHandler = function (event) {
   //After getting results from API, add them to page
   var displayForecast = function (results, searchCity) {
     var  today = moment();
+    console.log(searchCity);
     if (results.length === 0) {
       cityResultsTermEl.textContent = 'No results found for city';
       return;
     }
     
+    //store searched city name, but only if it has not been searched before
+    for(i=0;i<cities.length;i++){
+      if(searchCity.toUpperCase() === cities[i].toUpperCase()){
+        alreadySearched = true;
+        i = cities.length;
+      }
+      else{
+        alreadySearched=false;
+      }
+    }
+console.log(alreadySearched);
+    if(!alreadySearched){
+      cities.push(results.name);
+      localStorage.setItem("cities", JSON.stringify(cities));
+      renderNewSavedButtons();
+    }
+
+
+
     var iconUrl = 'http://openweathermap.org/img/w/' + results.weather[0].icon + '.png';
-    cityResultsTermEl.innerHTML= searchCity + " " + today.format("MM/DD/YY") + " ";
+    cityResultsTermEl.innerHTML= results.name + " " + today.format("MM/DD/YY") + " ";
     weatherIconTodayEl.setAttribute("src",iconUrl);
     cityTempEl.textContent = results.main.temp;
     cityWindEl.textContent = results.wind.speed;
     cityHumidityEl.textContent = results.main.humidity;
     lat = results.coord.lat;
     lon = results.coord.lon;
+
+    
 
   getCityFiveDayForecast(lat,lon);
 
@@ -148,8 +172,26 @@ var formSubmitHandler = function (event) {
     };
 
 var displayFiveDayForecast= function (data){
+    UVI= data.current.uvi;
+    if(UVI<3){
+      cityUVEl.setAttribute("class","UVGreen");
+    }
+    else if(UVI<6){
+      cityUVEl.setAttribute("class","UVModerate");
+    }
 
-    cityUVEl.textContent = data.current.uvi;
+    else if(UVI<8){
+      cityUVEl.setAttribute("class","UVHigh");
+    }
+
+    else if(UVI<11){
+      cityUVEl.setAttribute("class","UVVeryHigh");
+    }
+    else{
+      cityUVEl.setAttribute("class","UVExtreme");
+
+    }
+    cityUVEl.textContent = UVI;
 
     for(i=1;i<6;i++){
       dateEntry = document.querySelector("#date" + i);
