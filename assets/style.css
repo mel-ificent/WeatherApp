@@ -16,6 +16,7 @@
   
   main{
       padding:10px;
+      display:flex;
       flex-wrap:wrap;
   }
 
@@ -42,7 +43,7 @@
   }
 
   .results-card{
-    margin:5px;
+    margin:5px 10px 5px 10px;
     display:inline-block;
     height:100%;
     width:70%;
@@ -69,7 +70,11 @@
     min-width: 150px;
 
 }
-  
+  #city-history{
+      margin-top: 20px;
+      padding-top: 10px;
+      border-top: 3px solid var(--forecastcolor);
+  }
 
   
   /* FORM and buttons*/
