@@ -20,6 +20,7 @@
       flex-wrap:wrap;
   }
 
+
   
   /* CARDS & Containers*/
 
@@ -42,6 +43,7 @@
 
   }
 
+  /* If a city has not been searched yet, do not show anything in the main body*/
   .results-card-hide{
     margin:5px 10px 5px 10px;
     display:inline-block;
@@ -50,7 +52,7 @@
     visibility:hidden;
 
   }
-
+  /*If a city has been searched, show results in the main body */
   .results-card-show{
     margin:5px 10px 5px 10px;
     display:inline-block;
@@ -100,7 +102,7 @@
     width: 100%;
     padding: 3%;
     margin: 5px 0;
-    font-size: 1.2rem;
+    font-size: 16px;
   }
   
   .custom-button{
