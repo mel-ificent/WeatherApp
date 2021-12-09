@@ -82,9 +82,6 @@ var formSubmitHandler = function (event) {
     var city = cityInputEl.value.trim();
   
     if (city) {
-        //cities.push(city);
-        //localStorage.setItem("cities", JSON.stringify(cities));
-        //renderNewSavedButtons();
         getCityForecast(city);
         cityInputEl.value = '';
 
@@ -115,7 +112,6 @@ var formSubmitHandler = function (event) {
   //After getting results from API, add them to page
   var displayForecast = function (results, searchCity) {
     var  today = moment();
-    console.log(searchCity);
     if (results.length === 0) {
       cityResultsTermEl.textContent = 'No results found for city';
       return;
@@ -131,7 +127,6 @@ var formSubmitHandler = function (event) {
         alreadySearched=false;
       }
     }
-console.log(alreadySearched);
     if(!alreadySearched){
       cities.push(results.name);
       localStorage.setItem("cities", JSON.stringify(cities));
