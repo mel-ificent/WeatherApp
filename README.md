@@ -8,7 +8,7 @@ This application is designed to display a city's current weather and 5-day forec
     🌩 Bootstap styling to give the page a polished look
     🌪 A Dynamically updated page based on user's search and API results
 
-
+![Weather App](./assets/images/weatherapp.jpeg)
 
 ## Technologies used
     - Open Weather API
