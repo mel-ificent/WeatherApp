@@ -27,6 +27,7 @@ This application is designed to display a city's current weather and 5-day forec
 
 ## Usage
 All API keys referenced in the code is for demo purposes only.  If you decide to use this code in your own project, be sure to register with Open Weather api and replace any apikeys in the script.js file with your own.  As always, be sure to reference Open Weather to ensure you have an understanding of the API documentation and any terms of use from the provider. 
+
 ## License
 This project is licensed under the terms of the MIT license.
 
